@@ -18,7 +18,15 @@ Requirements:
 // (indicating the toast has burned).
 function toastBread(duration) {
     console.log("Starting to toast bread...");
-    // TODO Implement this function
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            if (duration <= 3000) { // Duration in milliseconds
+                resolve("Bread toasted perfectly.");
+            } else {
+                reject(new Error("The toast burned!"));
+            }
+        }, duration);
+    });
 }
 
 // Boiling water:
@@ -27,7 +35,15 @@ function toastBread(duration) {
 // (indicating the water has evaporated).
 function boilWater(duration) {
     console.log("Starting to boil water...");
-    // TODO Implement this function
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            if (duration <= 5000) {
+                resolve("Water boiled successfully.");
+            } else {
+                reject(new Error("The water evaporated!"));
+            }
+        }, duration);
+    });
 }
 
 // Brewing coffee:
@@ -36,7 +52,15 @@ function boilWater(duration) {
 // If the duration is longer, the Promise is rejected, indicating that the coffee over-brewed.
 function brewCoffee(duration) {
     console.log("Starting to brew coffee...");
-    // TODO Implement this function
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            if (duration <= 4000) {
+                resolve("Coffee brewed to perfection.");
+            } else {
+                reject(new Error("The coffee over-brewed!"));
+            }
+        }, duration);
+    });
 }
 
 // Putting butter on bread:
@@ -45,7 +69,15 @@ function brewCoffee(duration) {
 // If the duration is longer, the Promise is rejected, indicating that the butter melted.
 function putButterOnBread(duration) {
     console.log("Putting butter on bread...");
-    // TODO Implement this function
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            if (duration <= 2000) {
+                resolve("Butter on bread");
+            } else {
+                reject(new Error("Butter melted!"));
+            }
+        }, duration);
+    });
 }
 
 // Putting jam on toast:
@@ -54,7 +86,15 @@ function putButterOnBread(duration) {
 // If the duration is longer, the Promise is rejected, indicating that the jam spilled.
 function putJamOnToast(duration) {
     console.log("Putting jam on toast...");
-    // TODO Implement this function
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            if (duration <= 1000) {
+                resolve("Jam on toast");
+            } else {
+                reject(new Error("Jam spilled!"));
+            }
+        }, duration);
+    });
 }
 
 // Preparing the table:
@@ -63,7 +103,15 @@ function putJamOnToast(duration) {
 // If the duration is longer, the Promise is rejected, indicating that the table was not set properly.
 function prepareTheTable(duration) {
     console.log("Preparing the table...");
-    // TODO Implement this function
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            if (duration <= 6000) {
+                resolve("Table prepared");
+            } else {
+                reject(new Error("Table not set properly!"));
+            }
+        }, duration);
+    });
 }
 
 // Preparing breakfast
@@ -72,7 +120,33 @@ function prepareTheTable(duration) {
 // prepared successfully, and rejects if any of the components fail.
 function prepareBreakfast() {
 
-    // TODO Implement this function
+    Promise.all([
+
+        Promise.all([
+
+            toastBread(3000)
+                .then(() => putButterOnBread(1000)
+                    .then(() => putJamOnToast(1000)
+                        .then(message => console.log(message))
+                        .catch(error => console.error(error.message)))
+                    .catch(error => console.error(error.message)))
+                .catch(error => console.error(error.message)),
+
+            boilWater(4500)
+                .then(() => brewCoffee(3500)
+                    .then(message => console.log(message))
+                    .catch(error => console.error(error.message)))
+                .catch(error => console.error(error.message))
+
+        ])
+            .then(() => prepareTheTable(5000)
+                .then(message => console.log(message))
+                .catch(error => console.error(error.message)))
+            .catch(error => console.error(error.message))
+
+    ])
+        .then(() => console.log("Breakfast is ready!"))
+        .catch(error => console.error(error.message));
 
 }
 
