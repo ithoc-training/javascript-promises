@@ -120,33 +120,38 @@ function prepareTheTable(duration) {
 // prepared successfully, and rejects if any of the components fail.
 function prepareBreakfast() {
 
-    Promise.all([
+    let toastPromise = toastBread(3000)
+        .then(message => {
+            console.log(message);
+            return putButterOnBread(1000);
+        })
+        .then(message => {
+            console.log(message);
+            return putJamOnToast(1000);
+        })
+        .then(message => {
+            console.log(message);
+        });
 
-        Promise.all([
+    let coffeePromise = boilWater(4500)
+        .then(message => {
+            console.log(message);
+            return brewCoffee(3500);
+        })
+        .then(message => {
+            console.log(message);
+        })
 
-            toastBread(3000)
-                .then(() => putButterOnBread(1000)
-                    .then(() => putJamOnToast(1000)
-                        .then(message => console.log(message))
-                        .catch(error => console.error(error.message)))
-                    .catch(error => console.error(error.message)))
-                .catch(error => console.error(error.message)),
-
-            boilWater(4500)
-                .then(() => brewCoffee(3500)
-                    .then(message => console.log(message))
-                    .catch(error => console.error(error.message)))
-                .catch(error => console.error(error.message))
-
-        ])
-            .then(() => prepareTheTable(5000)
-                .then(message => console.log(message))
-                .catch(error => console.error(error.message)))
-            .catch(error => console.error(error.message))
-
-    ])
-        .then(() => console.log("Breakfast is ready!"))
-        .catch(error => console.error(error.message));
+    Promise.all([toastPromise, coffeePromise])
+        .then(message => {
+            console.log(message);
+            return prepareTheTable(5000)
+        })
+        .then(message => {
+            console.log(message);
+            console.log('Breakfast is ready!');
+        })
+        .catch(error => console.error(error.message))
 
 }
 
